@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "files.transfer.urlPrefix",
+      "type": "java.lang.String",
+      "description": "Description for files.transfer.urlPrefix."
+    },
+    {
+      "name": "files.transfer.uploadUrl",
+      "type": "java.lang.String",
+      "description": "Description for files.transfer.uploadUrl."
+    }
+  ]
+}
