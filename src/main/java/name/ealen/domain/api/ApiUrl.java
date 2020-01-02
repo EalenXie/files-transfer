@@ -1,4 +1,4 @@
-package name.ealen.domain.cons;
+package name.ealen.domain.api;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -8,16 +8,16 @@ import lombok.NoArgsConstructor;
  * 接口 地址 常量池
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ApiConst {
+class ApiUrl {
 
 
     /**
      * 简单的文件上传接口
      */
-    public static final String SIMPLE_UPLOAD = "/simple/upload";
+    static final String SIMPLE_UPLOAD = "/simple/upload";
 
     /**
      * 简单的文件下载接口
      */
-    public static final String SIMPLE_DOWNLOAD = "/simple/download";
+    static final String SIMPLE_DOWNLOAD = "/simple/download";
 }

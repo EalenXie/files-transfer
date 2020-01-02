@@ -1,4 +1,4 @@
-package name.ealen.domain.service;
+package name.ealen.domain.svc;
 
 import org.springframework.web.multipart.MultipartFile;
 
