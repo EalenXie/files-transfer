@@ -70,7 +70,7 @@ public class GloLogAspect {
             if (note.stackTrace()) {
                 try (StringWriter sw = new StringWriter(); PrintWriter writer = new PrintWriter(sw, true)) {
                     throwable.printStackTrace(writer);
-                    GloLog.contentRecord("Fail : " + sw.toString());
+                    GloLog.contentRecord("Fail : \n" + sw.toString());
                 }
             }
             //14. point.proceed()的异常务必抛出 , 交由后置异常通知处理或者全局异常处理
@@ -83,7 +83,7 @@ public class GloLogAspect {
             //17. 此时可以对此对象 进行记录 或者 收集 .....
             //do it yourself
         }
-        //18. 当执行完成并成功后,释放TreadLocal中的操作日志对象资源
+        //18. 当以上过程执行完成并成功后,释放TreadLocal中的操作日志对象资源
         GloLog.removeCurrent();
         return result;
     }

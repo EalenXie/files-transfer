@@ -77,7 +77,7 @@ public class GloLog {
      */
     public void costTimeCompute() {
         GloLog gloLog = GloLog.getCurrent();
-        gloLog.setCostTime((System.currentTimeMillis() - this.getActDate().getTime()));
+        gloLog.setCostTime((System.currentTimeMillis() - getActDate().getTime()));
         GloLog.setCurrent(gloLog);
     }
 
