@@ -1,18 +1,21 @@
 package name.ealen.global.advice.log;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * @author EalenXie Created on 2019/12/23 16:46.
- * 全局 自定义 线程单例 日志对象
+ * 全局 自定义 线程单例(不提供对外的构造方法,每个线程中有一个此对象) 日志对象
  * 如果此对象需要记录到数据库 长字段需要注意长度问题 Mysql推荐用longtext
  */
 @Data
-public class GloLog {
+public class GloLog implements Serializable {
+
     /**
      * 请务必注意该对象 使用->释放 原则
      */
@@ -103,7 +106,7 @@ public class GloLog {
      */
     public static void removeCurrent() {
         GloLog actLog = GLO_LOG_THREAD_LOCAL.get();
-        if (actLog != null) actLog.content.setLength(0);
+        if (actLog != null && actLog.getContent() != null) actLog.content.setLength(0);
         GLO_LOG_THREAD_LOCAL.remove();
     }
 
@@ -117,6 +120,11 @@ public class GloLog {
         if (gloLog.getContent() == null) gloLog.setContent(new StringBuilder());
         gloLog.getContent().append(step).append("\n");
         setCurrent(gloLog);
+    }
+
+    @Override
+    public String toString() {
+        return JSON.toJSONString(this);
     }
 
 }

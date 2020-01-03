@@ -1,5 +1,6 @@
 package name.ealen.domain.svc;
 
+import name.ealen.global.advice.log.GloLog;
 import name.ealen.infra.conf.FilesTransferConfig;
 import name.ealen.global.utils.FileConvert;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ public class FileTransferExecutor implements FileTransfer {
 
     @Override
     public File simpleUpload(MultipartFile file) throws IOException {
+        GloLog.contentRecord("1. 定位要上传的路径 构建上传对象");
         //1. 定位要上传的路径 构建上传对象
         String fileName = file.getName();
         if (StringUtils.isNotEmpty(file.getOriginalFilename())) {
@@ -28,6 +30,7 @@ public class FileTransferExecutor implements FileTransfer {
         }
         File res = new File(filesTransferConfig.getUploadUrl(), fileName);
         //2. 文件上传
+        GloLog.contentRecord("2. 文件上传");
         return FileConvert.simpleUpload(file, res);
     }
 

@@ -230,4 +230,13 @@ public class FileConvert {
     }
 
 
+    public static void writeObjectToFile(Object target, File file) {
+        try (FileOutputStream fos = new FileOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(target);
+        } catch (IOException e) {
+            log.warn("writeObjectToFile error : {}", e.getMessage());
+        }
+    }
+
+
 }

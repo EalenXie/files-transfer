@@ -1,6 +1,7 @@
 package name.ealen.domain.api;
 
 import name.ealen.domain.svc.FileTransfer;
+import name.ealen.global.advice.log.GloLogNote;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,6 +15,7 @@ import java.io.IOException;
  * @author EalenXie Created on 2019/12/31 13:35.
  */
 @RestController
+@GloLogNote
 public class FileUploaderApi {
 
     @Resource

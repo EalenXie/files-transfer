@@ -9,7 +9,6 @@ import javax.xml.bind.Marshaller;
 import java.io.File;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.Arrays;
 
 /**
  * Created by EalenXie on 2019/7/15 13:35.
