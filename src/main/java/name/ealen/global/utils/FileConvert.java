@@ -230,9 +230,9 @@ public class FileConvert {
     }
 
 
-    public static void writeObjectToFile(Object target, File file) {
-        try (FileOutputStream fos = new FileOutputStream(file); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(target);
+    public static void writeStringToFile(String target, File file) {
+        try (FileOutputStream fos = new FileOutputStream(file); PrintStream oos = new PrintStream(fos)) {
+            oos.append(target);
         } catch (IOException e) {
             log.warn("writeObjectToFile error : {}", e.getMessage());
         }

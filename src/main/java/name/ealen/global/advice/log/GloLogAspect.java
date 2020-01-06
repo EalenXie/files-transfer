@@ -1,7 +1,7 @@
 package name.ealen.global.advice.log;
 
 import lombok.extern.slf4j.Slf4j;
-import name.ealen.global.utils.FileConvert;
+import name.ealen.global.advice.log.collector.LogCollector;
 import name.ealen.global.utils.HttpUtils;
 import name.ealen.global.utils.SerializeConvert;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,11 +10,13 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Objects;
@@ -26,6 +28,7 @@ import java.util.Objects;
 @Component
 @Aspect
 @Slf4j
+@Order
 public class GloLogAspect {
 
     /**
@@ -35,6 +38,7 @@ public class GloLogAspect {
     public void gloLogNotePoint() {
         //ig
     }
+
 
 
     @Around("gloLogNotePoint()")
@@ -83,8 +87,6 @@ public class GloLogAspect {
             GloLog.setCurrent(gloLog);
             //17. 此时可以对此对象 进行记录 或者 收集 .....
             //do it yourself
-            String str= gloLog + "\n";
-            FileConvert.writeObjectToFile(str, new File("D:\\home","glo-log.txt"));
         }
         //18. 当以上过程执行完成并成功后,释放TreadLocal中的操作日志对象资源
         GloLog.removeCurrent();

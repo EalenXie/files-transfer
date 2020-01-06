@@ -28,7 +28,7 @@ public class HttpUtils {
     }
 
     /**
-     * 从HttpServletRequest 获取 json格式的header信息
+     * 从HttpServletRequest 获取 jsonString 格式的header信息
      */
     public static String getJsonHeaders(HttpServletRequest request, String... headers) {
         Map<String, String> headersMap = new ConcurrentHashMap<>();
