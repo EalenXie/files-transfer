@@ -1,7 +1,7 @@
 package name.ealen.domain.api;
 
 import name.ealen.domain.svc.FileTransfer;
-import name.ealen.global.advice.log.GloLogNote;
+import name.ealen.global.cons.ApiUrlConst;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,13 +15,12 @@ import java.io.IOException;
  * @author EalenXie Created on 2019/12/31 13:35.
  */
 @RestController
-@GloLogNote
 public class FileUploaderApi {
 
     @Resource
     private FileTransfer fileTransfer;
 
-    @PostMapping(ApiUrl.SIMPLE_UPLOAD)
+    @PostMapping(ApiUrlConst.SIMPLE_UPLOAD)
     public ResponseEntity simpleUpload(@RequestParam("file") MultipartFile file) throws IOException {
         fileTransfer.simpleUpload(file);
         return ResponseEntity.ok("上传成功");
@@ -30,7 +29,7 @@ public class FileUploaderApi {
     /**
      * 本例子以文件名 来定位要下载的文件对象
      */
-    @PostMapping(ApiUrl.SIMPLE_DOWNLOAD)
+    @PostMapping(ApiUrlConst.SIMPLE_DOWNLOAD)
     public void simpleDownload(@RequestParam("fileName") String fileName) throws IOException {
         fileTransfer.simpleDownload(fileName);
     }

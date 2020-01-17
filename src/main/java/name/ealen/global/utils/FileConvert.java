@@ -173,8 +173,14 @@ public class FileConvert {
     }
 
 
-    public static void toZip(String srcDir, OutputStream out) {
-        toZip(Collections.singletonList(new File(srcDir)), out);
+    /**
+     * 压缩成 Zip
+     *
+     * @param src 需要压缩的文件
+     * @param out 压缩文件输出流
+     */
+    public static void toZip(File src, OutputStream out) throws IOException {
+        toZip(Collections.singletonList(src), out);
     }
 
 
@@ -185,15 +191,13 @@ public class FileConvert {
      * @param out      压缩文件输出流
      */
 
-    public static void toZip(List<File> srcFiles, OutputStream out) {
+    public static void toZip(List<File> srcFiles, OutputStream out) throws IOException {
         long start = System.currentTimeMillis();
         try (ZipOutputStream zos = new ZipOutputStream(out)) {
             for (File srcFile : srcFiles) {
                 compress(srcFile, zos, srcFile.getName());
             }
             log.info("压缩完成，耗时：{}ms", System.currentTimeMillis() - start);
-        } catch (IOException e) {
-            log.error("printStackTrace", e);
         }
     }
 
@@ -230,11 +234,9 @@ public class FileConvert {
     }
 
 
-    public static void writeStringToFile(String target, File file) {
+    public static void writeStringToFile(String target, File file) throws IOException {
         try (FileOutputStream fos = new FileOutputStream(file); PrintStream oos = new PrintStream(fos)) {
             oos.append(target);
-        } catch (IOException e) {
-            log.warn("writeObjectToFile error : {}", e.getMessage());
         }
     }
 
