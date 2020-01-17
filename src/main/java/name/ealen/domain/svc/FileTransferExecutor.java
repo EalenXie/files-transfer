@@ -2,6 +2,7 @@ package name.ealen.domain.svc;
 
 import name.ealen.global.utils.FileConvert;
 import name.ealen.infra.conf.FilesTransferConfig;
+import name.ealen.interfaces.qry.ChunkUploadQry;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +47,16 @@ public class FileTransferExecutor implements FileTransfer {
     @Override
     public void simpleDownload(String fileName) throws IOException {
         FileConvert.simpleDownload(new File(filesTransferConfig.getUploadUrl(), fileName));
+    }
+
+    @Override
+    public void chunkUpload(ChunkUploadQry qry) throws IOException {
+        //1. 根据文件分片信息 找到 文件信息
+//        File folder=
+
+
+
+
     }
 
 

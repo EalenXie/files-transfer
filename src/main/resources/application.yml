@@ -20,3 +20,5 @@ files:
     urlPrefix: D:\home
     # 文件传输 服务器 上传地址
     uploadUrl: ${files.transfer.urlPrefix}\temp
+    # 文件传输 服务器 文件分块临时地址
+

@@ -1,4 +1,4 @@
-package name.ealen.domain.api;
+package name.ealen.interfaces.api;
 
 import name.ealen.domain.svc.FileTransfer;
 import name.ealen.global.cons.ApiUrlConst;

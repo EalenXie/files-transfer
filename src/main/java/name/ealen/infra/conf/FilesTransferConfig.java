@@ -17,9 +17,14 @@ public class FilesTransferConfig {
      * 地址前缀
      */
     private String urlPrefix;
-
     /**
      * 上传地址
      */
     private String uploadUrl;
+
+    /**
+     * 文件分块临时地址
+     */
+    private String chunkTempUrl;
+
 }

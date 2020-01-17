@@ -1,5 +1,6 @@
 package name.ealen.domain.svc;
 
+import name.ealen.interfaces.qry.ChunkUploadQry;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -16,7 +17,6 @@ public interface FileTransfer {
      *
      * @param file 上传文件对象
      * @return 上传成功后的文件对象
-     * @throws IOException 可能会抛出IOException
      */
     public File simpleUpload(MultipartFile file) throws IOException;
 
@@ -25,7 +25,13 @@ public interface FileTransfer {
      * 简单(传统) 文件下载
      *
      * @param fileName 要下载的文件的文件名
-     * @throws IOException 可能抛出IOException
      */
     public void simpleDownload(String fileName) throws IOException;
+
+
+    /**
+     * 文件分块上传
+     */
+    public void chunkUpload(ChunkUploadQry qry) throws IOException;
+
 }

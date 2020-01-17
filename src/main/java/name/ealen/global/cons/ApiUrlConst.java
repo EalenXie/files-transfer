@@ -20,4 +20,12 @@ public class ApiUrlConst {
      * 简单的文件下载接口
      */
     public static final String SIMPLE_DOWNLOAD = "/simple/download";
+
+
+    /**
+     * 文件分块上传
+     */
+    public static final String CHUNK_UPLOAD = "/chunk/upload";
+
+
 }
