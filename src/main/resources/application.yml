@@ -19,6 +19,6 @@ files:
     # 文件传输 服务器 地址前缀
     urlPrefix: D:\home
     # 文件传输 服务器 上传地址
-    uploadUrl: ${files.transfer.urlPrefix}\temp
+    uploadUrl: ${files.transfer.urlPrefix}\upload
     # 文件传输 服务器 文件分块临时地址
-
+    chunkTempUrl: ${files.transfer.urlPrefix}\temp

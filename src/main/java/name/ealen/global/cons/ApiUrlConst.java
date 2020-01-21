@@ -21,11 +21,13 @@ public class ApiUrlConst {
      */
     public static final String SIMPLE_DOWNLOAD = "/simple/download";
 
-
     /**
      * 文件分块上传
      */
     public static final String CHUNK_UPLOAD = "/chunk/upload";
 
-
+    /**
+     * 分块合并 完成上传
+     */
+    public static final String CHUNK_MERGE = "/chunk/merge";
 }

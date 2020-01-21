@@ -32,6 +32,6 @@ public interface FileTransfer {
     /**
      * 文件分块上传
      */
-    public void chunkUpload(ChunkUploadQry qry) throws IOException;
+    public File chunkUpload(ChunkUploadQry qry) throws IOException;
 
 }

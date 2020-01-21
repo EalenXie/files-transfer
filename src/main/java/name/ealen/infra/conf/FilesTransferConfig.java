@@ -23,7 +23,7 @@ public class FilesTransferConfig {
     private String uploadUrl;
 
     /**
-     * 文件分块临时地址
+     * 文件分块临时存放地址
      */
     private String chunkTempUrl;
 

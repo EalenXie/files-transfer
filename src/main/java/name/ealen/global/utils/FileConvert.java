@@ -82,19 +82,20 @@ public class FileConvert {
                     ByteBuffer buffer = ByteBuffer.allocate(1024);
                     while (true) {
                         buffer.clear();
-                        int len = readChannel.read(buffer);//读入数据
+                        //读入数据
+                        int len = readChannel.read(buffer);
                         if (len < 0) {
-                            break;//传输结束
+                            //传输结束
+                            break;
                         }
                         buffer.flip();
-                        writeChannel.write(buffer);//写入数据
+                        //写入数据
+                        writeChannel.write(buffer);
                     }
                 }
                 stream.close();
             }
         }
-
-
     }
 
     /**
@@ -112,6 +113,26 @@ public class FileConvert {
         if (size >= 1) return df.format(size) + "KB";
         return length + "B";
     }
+
+    /**
+     * 根据长度得到格式大小(比如 : 1.81GB,1.83MB)
+     *
+     * @param length 文件长度
+     * @return 返回一个表示文件大小的字符串 比如 1.51G、1.82MB
+     */
+    public static String getFormatSize(long length) {
+        //换算单位
+        double kb = 1024;
+        double mb = kb * kb;
+        double gb = kb * mb;
+        double tb = kb * gb;
+        if (length < kb) return length + "B";
+        if (length < mb) return df.format(length / kb) + "KB";
+        if (length < gb) return df.format(length / mb) + "MB";
+        if (length < tb) return df.format(length / gb) + "GB";
+        return df.format(length / tb) + "TB";
+    }
+
 
 
     /**
@@ -167,14 +188,5 @@ public class FileConvert {
         if (path.contains(symbol.toString())) return path.substring(0, path.lastIndexOf(symbol));
         else return path;
     }
-
-
-
-    public static void writeStringToFile(String target, File file) throws IOException {
-        try (FileOutputStream fos = new FileOutputStream(file); PrintStream oos = new PrintStream(fos)) {
-            oos.append(target);
-        }
-    }
-
 
 }

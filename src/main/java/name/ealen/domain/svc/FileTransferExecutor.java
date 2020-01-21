@@ -3,6 +3,7 @@ package name.ealen.domain.svc;
 import name.ealen.global.utils.FileConvert;
 import name.ealen.infra.conf.FilesTransferConfig;
 import name.ealen.interfaces.qry.ChunkUploadQry;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.RandomAccessFile;
 
 /**
  * @author EalenXie Created on 2019/12/31 14:04.
@@ -49,14 +52,38 @@ public class FileTransferExecutor implements FileTransfer {
         FileConvert.simpleDownload(new File(filesTransferConfig.getUploadUrl(), fileName));
     }
 
+
     @Override
-    public void chunkUpload(ChunkUploadQry qry) throws IOException {
-        //1. 根据文件分片信息 找到 文件信息
-//        File folder=
-
-
-
-
+    public File chunkUpload(ChunkUploadQry qry) throws IOException {
+        //1. 定位上传父级目录
+        File folder = new File(filesTransferConfig.getChunkTempUrl(), qry.getMd5());
+        if (!folder.exists()) FileUtils.forceMkdir(folder);
+        if (!folder.isDirectory()) throw new IOException("Upload destination is a file, should be a folder");
+        //2. 定位分片 分片命名规则 : 文件md5(分片序号).tmp
+        File chunkFile = new File(folder, qry.getMd5() + "(" + qry.getChunkSeq() + ").tmp");
+        if (!chunkFile.exists()) {
+            FileConvert.simpleUpload(qry.getFile(), chunkFile);
+        } else {
+            MultipartFile uploadFile = qry.getFile();
+            //分片续传
+            if (chunkFile.length() != uploadFile.getSize() && uploadFile.getSize() > chunkFile.length()) {
+                try (RandomAccessFile chunkAccessFile = new RandomAccessFile(chunkFile, "rw");
+                     InputStream input = uploadFile.getInputStream()) {
+                    chunkAccessFile.seek(chunkFile.length());
+                    input.skip(chunkFile.length());
+                    byte[] bytes = new byte[1024];
+                    int nRead;
+                    // 从输入流中读入字节流，然后写到文件中
+                    while ((nRead = input.read(bytes)) != -1) {
+                        chunkAccessFile.write(bytes, 0, nRead);
+                    }
+                }
+            } else if (chunkFile.length() < uploadFile.getSize()) {
+                FileUtils.deleteQuietly(chunkFile);
+                FileConvert.simpleUpload(qry.getFile(), chunkFile);
+            }
+        }
+        return chunkFile;
     }
 
 
