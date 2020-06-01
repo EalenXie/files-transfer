@@ -18,7 +18,7 @@ public interface FileTransfer {
      * @param file 上传文件对象
      * @return 上传成功后的文件对象
      */
-    public File simpleUpload(MultipartFile file) throws IOException;
+    File simpleUpload(MultipartFile file) throws IOException;
 
 
     /**
@@ -26,12 +26,12 @@ public interface FileTransfer {
      *
      * @param fileName 要下载的文件的文件名
      */
-    public void simpleDownload(String fileName) throws IOException;
+    void simpleDownload(String fileName) throws IOException;
 
 
     /**
      * 文件分块上传
      */
-    public File chunkUpload(ChunkUploadQry qry) throws IOException;
+    File chunkUpload(ChunkUploadQry qry) throws IOException;
 
 }

@@ -23,7 +23,7 @@ public class FileUploaderApi {
     private FileTransfer fileTransfer;
 
     @PostMapping(ApiUrlConst.SIMPLE_UPLOAD)
-    public ResponseEntity simpleUpload(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<String> simpleUpload(@RequestParam("file") MultipartFile file) throws IOException {
         fileTransfer.simpleUpload(file);
         return ResponseEntity.ok("上传成功");
     }
@@ -37,7 +37,7 @@ public class FileUploaderApi {
     }
 
     @PostMapping(ApiUrlConst.CHUNK_UPLOAD)
-    public ResponseEntity chunkUpload(@RequestParam("md5") String md5, @RequestParam("chunkMd5") String chunkMd5,
+    public ResponseEntity<String> chunkUpload(@RequestParam("md5") String md5, @RequestParam("chunkMd5") String chunkMd5,
                                       @RequestParam("chunkSeq") Integer chunkSeq, @RequestParam("chunkSize") Long chunkSize,
                                       @RequestParam(value = "path", required = false) String path,
                                       @RequestParam("file") MultipartFile file) throws IOException {
