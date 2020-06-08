@@ -4,6 +4,7 @@ package name.ealen.global.utils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -28,17 +29,34 @@ import java.text.DecimalFormat;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Slf4j
 public class FileConvert {
-    private static DecimalFormat df;
+    private static DecimalFormat DF;
+
+    /**
+     * 1 KB = 1024 B
+     */
+    private static final double KB = 1024;
+    /**
+     * 1 MB = 1024 KB
+     */
+    private static final double MB = KB * KB;
+    /**
+     * 1 GB = 1024 MB
+     */
+    private static final double GB = KB * MB;
+    /**
+     * 1 TB = 1024 GB
+     */
+    private static final double TB = KB * GB;
 
     static {
         // 设置数字格式，保留一位有效小数
-        df = new DecimalFormat("#0.00");
+        DF = new DecimalFormat("#0.00");
         //四舍五入
-        df.setRoundingMode(RoundingMode.HALF_UP);
+        DF.setRoundingMode(RoundingMode.HALF_UP);
         //设置数字的分数部分中允许的最小位数。
-        df.setMinimumFractionDigits(2);
+        DF.setMinimumFractionDigits(2);
         //设置数字的分数部分中允许的最大位数。
-        df.setMaximumFractionDigits(2);
+        DF.setMaximumFractionDigits(2);
     }
 
     /**
@@ -106,11 +124,11 @@ public class FileConvert {
      */
     public static String getFormatFileSize(long length) {
         double size = ((double) length) / (1 << 30);
-        if (size >= 1) return df.format(size) + "GB";
+        if (size >= 1) return DF.format(size) + "GB";
         size = ((double) length) / (1 << 20);
-        if (size >= 1) return df.format(size) + "MB";
+        if (size >= 1) return DF.format(size) + "MB";
         size = ((double) length) / (1 << 10);
-        if (size >= 1) return df.format(size) + "KB";
+        if (size >= 1) return DF.format(size) + "KB";
         return length + "B";
     }
 
@@ -121,18 +139,12 @@ public class FileConvert {
      * @return 返回一个表示文件大小的字符串 比如 1.51G、1.82MB
      */
     public static String getFormatSize(long length) {
-        //换算单位
-        double kb = 1024;
-        double mb = kb * kb;
-        double gb = kb * mb;
-        double tb = kb * gb;
-        if (length < kb) return length + "B";
-        if (length < mb) return df.format(length / kb) + "KB";
-        if (length < gb) return df.format(length / mb) + "MB";
-        if (length < tb) return df.format(length / gb) + "GB";
-        return df.format(length / tb) + "TB";
+        if (length < KB) return length + "B";
+        if (length < MB) return DF.format(length / KB) + "KB";
+        if (length < GB) return DF.format(length / MB) + "MB";
+        if (length < TB) return DF.format(length / GB) + "GB";
+        return DF.format(length / TB) + "TB";
     }
-
 
 
     /**
@@ -187,6 +199,14 @@ public class FileConvert {
     public static String getLastOfSymbolPrefix(@NonNull String path, @NonNull Character symbol) {
         if (path.contains(symbol.toString())) return path.substring(0, path.lastIndexOf(symbol));
         else return path;
+    }
+
+
+    /**
+     * 计算文件的MD5
+     */
+    public String getFileMD5(File file) throws IOException {
+        return DigestUtils.md5Hex(new FileInputStream(file)).toUpperCase();
     }
 
 }
