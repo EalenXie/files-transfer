@@ -1,6 +1,5 @@
-package name.ealen.infra.conf;
+package com.github.conf;
 
-import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
  * @author EalenXie Created on 2019/12/31 14:28.
  * 文件传输 服务器配置
  */
-@Data
 @Configuration
 @ConfigurationProperties(prefix = "files.transfer")
 public class FilesTransferConfig {
@@ -27,4 +25,27 @@ public class FilesTransferConfig {
      */
     private String chunkTempUrl;
 
+    public String getUrlPrefix() {
+        return urlPrefix;
+    }
+
+    public void setUrlPrefix(String urlPrefix) {
+        this.urlPrefix = urlPrefix;
+    }
+
+    public String getUploadUrl() {
+        return uploadUrl;
+    }
+
+    public void setUploadUrl(String uploadUrl) {
+        this.uploadUrl = uploadUrl;
+    }
+
+    public String getChunkTempUrl() {
+        return chunkTempUrl;
+    }
+
+    public void setChunkTempUrl(String chunkTempUrl) {
+        this.chunkTempUrl = chunkTempUrl;
+    }
 }

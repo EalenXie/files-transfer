@@ -1,6 +1,6 @@
-package name.ealen.domain.svc;
+package com.github.svc;
 
-import name.ealen.interfaces.qry.ChunkUploadQry;
+import com.github.interfaces.qry.ChunkUploadQry;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -16,9 +16,8 @@ public interface FileTransfer {
      * 简单(传统)文件上传
      *
      * @param file 上传文件对象
-     * @return 上传成功后的文件对象
      */
-    File simpleUpload(MultipartFile file) throws IOException;
+    void simpleUpload(MultipartFile file) throws IOException;
 
 
     /**

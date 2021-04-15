@@ -1,8 +1,8 @@
-package name.ealen.domain.svc;
+package com.github.svc;
 
-import name.ealen.global.utils.FileConvert;
-import name.ealen.infra.conf.FilesTransferConfig;
-import name.ealen.interfaces.qry.ChunkUploadQry;
+import com.github.global.helper.FileHelper;
+import com.github.conf.FilesTransferConfig;
+import com.github.interfaces.qry.ChunkUploadQry;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,6 @@ public class FileTransferExecutor implements FileTransfer {
     @Resource
     private FilesTransferConfig filesTransferConfig;
 
-
     /**
      * 简单的HTTP 文件上传
      * 1. 获取上传的文件名
@@ -31,13 +30,12 @@ public class FileTransferExecutor implements FileTransfer {
      * 3. 文件上传
      *
      * @param file 上传文件对象
-     * @return 返回上传成功的文件对象
      */
     @Override
-    public File simpleUpload(MultipartFile file) throws IOException {
+    public void simpleUpload(MultipartFile file) throws IOException {
         String fileName = StringUtils.isNotEmpty(file.getOriginalFilename()) ? file.getOriginalFilename() : file.getName();
         File res = new File(filesTransferConfig.getUploadUrl(), fileName);
-        return FileConvert.simpleUpload(file, res);
+        file.transferTo(res);
     }
 
     /**
@@ -49,10 +47,13 @@ public class FileTransferExecutor implements FileTransfer {
      */
     @Override
     public void simpleDownload(String fileName) throws IOException {
-        FileConvert.simpleDownload(new File(filesTransferConfig.getUploadUrl(), fileName));
+        FileHelper.simpleDownload(new File(filesTransferConfig.getUploadUrl(), fileName));
     }
 
 
+    /**
+     * 分片上传
+     */
     @Override
     public File chunkUpload(ChunkUploadQry qry) throws IOException {
         //1. 定位上传父级目录
@@ -62,25 +63,26 @@ public class FileTransferExecutor implements FileTransfer {
         //2. 定位分片 分片命名规则 : 文件md5(分片序号).tmp
         File chunkFile = new File(folder, qry.getMd5() + "(" + qry.getChunkSeq() + ").tmp");
         if (!chunkFile.exists()) {
-            FileConvert.simpleUpload(qry.getFile(), chunkFile);
+            qry.getFile().transferTo(chunkFile);
         } else {
             MultipartFile uploadFile = qry.getFile();
             //分片续传
             if (chunkFile.length() != uploadFile.getSize() && uploadFile.getSize() > chunkFile.length()) {
-                try (RandomAccessFile chunkAccessFile = new RandomAccessFile(chunkFile, "rw");
-                     InputStream input = uploadFile.getInputStream()) {
+                try (RandomAccessFile chunkAccessFile = new RandomAccessFile(chunkFile, "rw"); InputStream input = uploadFile.getInputStream()) {
                     chunkAccessFile.seek(chunkFile.length());
-                    input.skip(chunkFile.length());
-                    byte[] bytes = new byte[1024];
-                    int nRead;
-                    // 从输入流中读入字节流，然后写到文件中
-                    while ((nRead = input.read(bytes)) != -1) {
-                        chunkAccessFile.write(bytes, 0, nRead);
+                    long length = input.skip(chunkFile.length());
+                    if (length > 0) {
+                        byte[] bytes = new byte[1024];
+                        int nRead;
+                        // 从输入流中读入字节流，然后写到文件中
+                        while ((nRead = input.read(bytes)) != -1) {
+                            chunkAccessFile.write(bytes, 0, nRead);
+                        }
                     }
                 }
             } else if (chunkFile.length() < uploadFile.getSize()) {
                 FileUtils.deleteQuietly(chunkFile);
-                FileConvert.simpleUpload(qry.getFile(), chunkFile);
+                qry.getFile().transferTo(chunkFile);
             }
         }
         return chunkFile;

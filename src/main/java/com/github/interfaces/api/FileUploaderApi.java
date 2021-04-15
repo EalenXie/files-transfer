@@ -1,8 +1,8 @@
-package name.ealen.interfaces.api;
+package com.github.interfaces.api;
 
-import name.ealen.domain.svc.FileTransfer;
-import name.ealen.global.cons.ApiUrlConst;
-import name.ealen.interfaces.qry.ChunkUploadQry;
+import com.github.svc.FileTransfer;
+import com.github.global.cons.ApiUrlConst;
+import com.github.interfaces.qry.ChunkUploadQry;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
